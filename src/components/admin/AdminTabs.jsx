@@ -4,14 +4,19 @@ import { Menu, X } from "lucide-react";
 
 const AdminTabs = ({ selected, onSelect }) => {
   const [methods, setAccessPages] = useState([
-    "transaction",
-    "games",
-    "withdraw-requests",
-    "admin-management",
-    "deposite",
-    "telegram",
-    "qr-code",
+    "All Users",
+    "Transaction",
+    "Games",
+    "Withdrawals",
+    "Admin Controller",
+    "Deposite",
+    "Telegram",
+    "QRCode",
+    "QRCode Crypto",
+    "Spinner Prices",
+    "Refer Amount",
   ]);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // useEffect(() => {
@@ -71,12 +76,12 @@ const AdminTabs = ({ selected, onSelect }) => {
       </div>
 
       {/* Desktop Tabs */}
-      <div className="hidden md:flex space-x-4 border-b border-zinc-700 min-w-max px-4 py-2 overflow-x-auto">
+      <div className="flex space-x-4 border-b border-zinc-700 min-w-max px-4 py-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-zinc-800">
         {methods.map((method, index) => (
           <button
             key={`${method}-${index}`}
             onClick={() => onSelect(method)}
-            className={`whitespace-nowrap py-2 px-4 font-semibold transition ${
+            className={`flex-shrink-0 whitespace-nowrap py-2 px-4 font-semibold transition ${
               selected === method
                 ? "border-b-2 border-white text-white"
                 : "text-zinc-400 hover:text-white"

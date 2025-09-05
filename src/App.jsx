@@ -25,6 +25,7 @@ import TelegramSubscription from "./components/TelegramSubscription";
 import GameBets from "./components/admin/GameBets";
 import RankingPage from "./components/RankingPage";
 import QRCode from "./components/admin/QRCode";
+import { ReferEarn } from "./components/ReferEarn";
 
 const App = () => {
   useEffect(() => {
@@ -69,13 +70,14 @@ const App = () => {
                 <Route path="/spinner" element={<Spinner />} />
                 <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/color-trading" element={<Color />} />
+                <Route path="/refer-earn" element={<ReferEarn />} />
                 <Route
                   path="/telegram-subscription/:gameName"
                   element={<TelegramSubscription />}
                 />
                 <Route path="/bets" element={<GameBets userId={userId} />} />
                 <Route path="/ranking" element={<RankingPage />} />
-                //private routes
+                {/* //private routes */}
                 <Route
                   path="/withdraw"
                   element={<PrivateRoute children={<WithdrawalContainer />} />}

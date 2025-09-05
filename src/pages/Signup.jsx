@@ -6,14 +6,20 @@ import OTPVerificationModal from "../components/OTPVerificationModel";
 import { countryCodes } from "../utils/countryCodes";
 import { registerUser } from "../utils/registerUser";
 import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Signup = () => {
+  const [searchParams] = useSearchParams();
+  const refId = searchParams.get("ref");
+
+  console.log("refId", refId);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
+    ref_by: refId || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -23,6 +29,7 @@ const Signup = () => {
   const [showOTPModal, setShowOTPModal] = useState(false);
   const [registrationData, setRegistrationData] = useState(null);
 
+  console.log("registrationData", registrationData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -158,6 +165,7 @@ const Signup = () => {
           email: formData.email,
           phoneNumber: formData.phone,
           password: formData.password,
+          ref_by: refId,
         };
 
         const result = await registerUser(registrationPayload);
@@ -170,6 +178,7 @@ const Signup = () => {
             email: formData.email,
             phone: formData.phone,
             password: formData.password,
+            ref_by: refId,
           });
 
           // Show OTP verification modal

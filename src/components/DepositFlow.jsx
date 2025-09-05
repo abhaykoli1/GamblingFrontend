@@ -9,6 +9,7 @@ const DepositFlow = () => {
   const [network, setNetwork] = useState("erc20");
   const [showPopup, setShowPopup] = useState(false);
   const [qrCodes, setQrCodes] = useState([]);
+  const [qrCryptoCodes, setQrCryptoCodes] = useState([]);
 
   const quickAmounts = [100, 200, 300, 500, 1000, 2000, 3000, 5000];
 
@@ -36,6 +37,23 @@ const DepositFlow = () => {
 
   useEffect(() => {
     fetchQrCodes();
+  }, []);
+
+  const fetchQrCryptoCodes = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/qrcodecrypto/qr-codes`
+      );
+      const data = await res.json();
+      console.log("data", data);
+      if (data.success) setQrCryptoCodes(data.data);
+    } catch (err) {
+      console.error("Failed to fetch QR Codes", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchQrCryptoCodes();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -166,6 +184,30 @@ const DepositFlow = () => {
     </div>
   );
 
+  const renderCryptoScanner = () => (
+    <div className="mb-4 flex items-center flex-col w-full">
+      <h2 className="text-lg font-semibold mb-2">Scan to Deposit</h2>
+      <div className="w-52 h-52  bg-gray-200 flex items-center justify-center rounded-md">
+        <div className="">
+          {qrCryptoCodes?.map((qr) => (
+            <div key={qr._id} className="">
+              <img
+                src={`${import.meta.env.VITE_API_URL}${qr.imageUrl}`}
+                alt={qr.title}
+                className="w-auto object-contain"
+              />
+            </div>
+          ))}
+          {qrCryptoCodes.length === 0 && (
+            <p className="col-span-full text-gray-400 text-center">
+              No QR Codes uploaded yet.
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   const renderPayInput = () => (
     <div className="mb-4 w-full">
       <label className="block mb-2 font-semibold">
@@ -194,7 +236,7 @@ const DepositFlow = () => {
                 key={m}
                 onClick={() => {
                   setMethod(m);
-                  setAmount("");
+                  // setAmount("");
                   setPayNumber("");
                 }}
                 className={`px-4 py-2 shadow-sm shadow-[#9C1137] rounded-md ${
@@ -214,12 +256,13 @@ const DepositFlow = () => {
 
         {/* Step 3 - Crypto Options */}
         {method === "Crypto" && renderCryptoOptions()}
-
+        {amount &&
+          (method === "Crypto" ? renderCryptoScanner() : renderScanner())}
         {/* Step 4 - QR Scanner */}
-        {amount && renderScanner()}
+        {/* {amount && renderScanner()} */}
 
         {/* Step 5 - Enter Pay Number */}
-        {amount && renderPayInput()}
+        {amount && (method !== "Crypto" ? renderPayInput() : "")}
 
         {/* Final Submit */}
         {amount && payNumber && (
