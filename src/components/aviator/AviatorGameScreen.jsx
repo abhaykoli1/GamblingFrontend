@@ -16,16 +16,16 @@ export default function AviatorGameScreen() {
     liveBets,
     topBets,
     hasBet,
+    gameHistory,
     setHasBet,
   } = useAviatorSocket();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userId = user?._id;
-  const crashPoints = [
-    4.73, 6.18, 2.84, 9.77, 3.92, 8.36, 7.12, 2.57, 5.66, 3.24, 9.31, 2.05,
-    6.44, 7.98, 3.68, 4.27, 2.91, 8.02, 5.19, 9.83,
-  ];
+  const crashPoints = gameHistory ? gameHistory.slice(1) : [];
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const [nextRoundTimer, setNextRoundTimer] = useState(0);
 
   useEffect(() => {
     const audio = new Audio("/main.mp3");
@@ -58,6 +58,7 @@ export default function AviatorGameScreen() {
   const rafRef = useRef(null);
   const startTsRef = useRef(null);
 
+
   // plane image
   const planeImg = useRef(new Image());
   planeImg.current.src = "./aviator.png";
@@ -75,6 +76,25 @@ export default function AviatorGameScreen() {
     fetchUserBets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multiplier]);
+
+  useEffect(() => {
+    if (!isRunning && crashPoint) {
+      let countdown = 5; // 👈 yaha backend ka ROUND_GAP/1000 dalna (seconds)
+      setNextRoundTimer(countdown);
+
+      const interval = setInterval(() => {
+        countdown -= 1;
+        if (countdown <= 0) {
+          clearInterval(interval);
+          setNextRoundTimer(0);
+        } else {
+          setNextRoundTimer(countdown);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isRunning, crashPoint]);
 
   const fetchUserBets = async () => {
     if (!userId) return;
@@ -161,7 +181,7 @@ export default function AviatorGameScreen() {
 
       try {
         ctx.drawImage(planeImg.current, px, py, planeSize * sx, planeSize * sy);
-      } catch (e) {}
+      } catch (e) { }
 
       if (isRunning) rafRef.current = requestAnimationFrame(render);
     };
@@ -368,9 +388,8 @@ export default function AviatorGameScreen() {
       <Header />
       <div className=" flex mb-2 w-full md:px-12 px-3 gap-2 items-start">
         <div
-          className={`overflow-y-hidden overflow-x-auto ${
-            isExpanded ? "" : ""
-          }`}
+          className={`overflow-y-hidden overflow-x-auto ${isExpanded ? "" : ""
+            }`}
           style={{ scrollbarWidth: "none" }}
         >
           <div className="flex flex-nowrap gap-2 bg-transparent mt-2 p-4 rounded-md">
@@ -378,10 +397,10 @@ export default function AviatorGameScreen() {
               <div
                 key={index}
                 className={`px-3 py-1 rounded-2xl font-mono font-semibold shadow-sm ${getColor(
-                  point
+                  point?.crashPoint ?? null
                 )}`}
               >
-                {point}x
+                {point?.crashPoint ?? null}x
               </div>
             ))}
           </div>
@@ -412,14 +431,21 @@ export default function AviatorGameScreen() {
 
           {/* overlays */}
           {!isRunning && crashPoint ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm">
               <p className="text-red-400 text-2xl md:text-3xl font-bold">
                 💥 Crashed at {crashPoint.toFixed(2)}x
               </p>
+              {nextRoundTimer > 0 && (
+                <p className="text-yellow-400 text-lg mt-2">
+                  Next round in {nextRoundTimer}s…
+                </p>
+              )}
             </div>
           ) : !isRunning ? (
             <div className="absolute inset-0 flex items-center justify-center">
-              <p className="text-gray-300/80">Waiting for next round…</p>
+              <p className="text-gray-300/80">
+                Waiting for next round…
+              </p>
             </div>
           ) : null}
         </div>
