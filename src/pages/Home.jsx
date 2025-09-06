@@ -9,7 +9,7 @@ import TelegramMenu from "../components/TelegramMenu";
 
 const Home = () => {
   const [games, setGames] = useState([]);
-
+  console.log(games);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/visible-games`)
       .then((response) => response.json())
@@ -51,15 +51,16 @@ const Home = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#160003] pb-12">
+      <div className="fixed md:top-1/2 top-1/3 -translate-y-1/2 right-5">
+        <TelegramMenu />
+      </div>
       <span className="">
-        <Navbar />{" "}
+        <Navbar />
       </span>
       <div className="border fixed left-0 bottom-0 z-20">
         <BottomBar />
       </div>
-      <div className="absolute top-1/2 right-[1rem]">
-        <TelegramMenu />
-      </div>
+
       <div className="md:flex hidden flex-col">
         <div className="py-4 flex gap-4 text-white md:flex-row flex-col-reverse items-center px-4 md:px-24">
           <div className="text-center flex gap-2">
@@ -137,7 +138,7 @@ const Home = () => {
             );
           })}
 
-          {games.map((gameKey) => {
+          {/* {games.map((gameKey) => {
             const info = gameInfo[gameKey];
             if (!info) return null; // Skip if game not in predefined object
 
@@ -168,7 +169,7 @@ const Home = () => {
                 </span>
               </Link>
             );
-          })}
+          })} */}
         </div>
       </div>
     </div>
