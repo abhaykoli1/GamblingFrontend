@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { BadgeIndianRupee, Club, School, Trophy, X } from "lucide-react";
+import { BadgeIndianRupee, Club, School, Trophy, User, X } from "lucide-react";
 
-const BottomBar = () => {
+const BottomBar = ({ hidden }) => {
   const [open, setOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
   const [games, setGames] = useState([]);
 
+  console.log(user);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/visible-games`)
       .then((response) => response.json())
@@ -43,7 +44,9 @@ const BottomBar = () => {
 
   return (
     <nav className="min-w-screen px-4 py-2 md:border-0 border-t-1 bg-[#160003] border-amber-200">
-      <div className="text-amber-200 md:hidden flex justify-between min-w-full items-center">
+      <div
+        className={`text-amber-200    md:hidden flex justify-between min-w-full items-center`}
+      >
         <Link to={"/"} className="flex flex-col items-center">
           <School />
           <p>Home</p>
@@ -58,19 +61,19 @@ const BottomBar = () => {
           <BadgeIndianRupee />
           <p>Earn</p>
         </Link>
-        {/* 
-        <Link to={"/bets"} className="flex z-50 flex-col items-center">
-          <BadgeIndianRupee />
-          <p>Mine</p>
-        </Link> */}
 
-        <span
+        <Link to={"/profile"} className="flex z-50 flex-col items-center">
+          <User />
+          <p>Mine</p>
+        </Link>
+
+        {/* <span
           className="flex flex-col items-center"
           onClick={() => setOpen(!open)} // Custom button to toggle the menu
         >
           <Club />
           <p>Mine</p>
-        </span>
+        </span> */}
       </div>
 
       {/* Menu toggle */}

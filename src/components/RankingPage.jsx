@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Crown } from "lucide-react";
 import BottomBar from "./BottomBar";
 
@@ -31,7 +30,7 @@ const RankingPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setUsers((prevUsers) => shuffleArray(prevUsers));
-    }, 1000); // every 6 sec
+    }, 5000); // every 6 sec
 
     return () => clearInterval(interval);
   }, []);
