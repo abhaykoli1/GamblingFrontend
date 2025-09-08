@@ -2,6 +2,8 @@ import { useState } from 'react';
 import TransactionHistory from './TransactionHistory';
 
 const HistorySection = ({ activeTab, setActiveTab, gameHistory, lastResult, userBets }) => {
+
+  // console.log('activeTab, setActiveTab, gameHistory, lastResult, userBets', activeTab, setActiveTab, gameHistory, lastResult, userBets);
   const tabs = [
     { id: 'history', label: 'Game History' },
     { id: 'chart', label: 'Chart' },
@@ -32,7 +34,7 @@ const HistorySection = ({ activeTab, setActiveTab, gameHistory, lastResult, user
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-             className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${activeTab === tab.id
+            className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${activeTab === tab.id
               ? 'text-white bg-transparent shadow-xs shadow-amber-700'
               : 'text-gray-600 hover:text-white'
               }`}
@@ -124,12 +126,12 @@ const HistorySection = ({ activeTab, setActiveTab, gameHistory, lastResult, user
                       <span
                         key={number}
                         className={`inline-block min-w-6 h-6 text-center rounded-full font-bold text-sm ${isWinningNumber
-                            ? [1, 3, 7, 9].includes(number) // Green for odd numbers (1, 3, 7, 9)
-                              ? 'bg-green-500'
-                              : [2, 4, 6, 8].includes(number) // Red for even numbers (2, 4, 6, 8)
-                                ? 'bg-red-500'
-                                : 'bg-purple-500' // Purple for others
-                            : 'text-gray-500' // Non-winning numbers are gray
+                          ? [1, 3, 7, 9].includes(number) // Green for odd numbers (1, 3, 7, 9)
+                            ? 'bg-green-500'
+                            : [2, 4, 6, 8].includes(number) // Red for even numbers (2, 4, 6, 8)
+                              ? 'bg-red-500'
+                              : 'bg-purple-500' // Purple for others
+                          : 'text-gray-500' // Non-winning numbers are gray
                           }`}
                       >
                         {number}

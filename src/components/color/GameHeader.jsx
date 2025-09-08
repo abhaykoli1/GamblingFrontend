@@ -2,7 +2,7 @@ import { Clock, TrendingUp } from 'lucide-react';
 import Header from './Header';
 import { useBalance } from '../../context/BalanceContext';
 
-const GameHeader = ({ period, timeLeft }) => {
+const GameHeader = ({ period, timeLeft, showPopup, savedResult, popupTimer }) => {
   const { balance } = useBalance()
   const integerBalance = Math.floor(parseInt(balance, 10))
 
@@ -41,6 +41,10 @@ const GameHeader = ({ period, timeLeft }) => {
           </div>
         </div>
       </div>
+
+  
+
+
     </div>
   );
 };
