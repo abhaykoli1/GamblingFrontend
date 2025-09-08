@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TelegramSubscription = () => {
@@ -13,7 +13,7 @@ const TelegramSubscription = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { gameName } = useParams();
   const navigate = useNavigate();
-
+  const [qrCodes, setQrCodes] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user._id;
 
@@ -23,6 +23,21 @@ const TelegramSubscription = () => {
     phoneNumber,
     gameName,
   };
+  const fetchQrCodes = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/qrcode/qr-codes`
+      );
+      const data = await res.json();
+      console.log("data", data);
+      if (data.success) setQrCodes(data.data);
+    } catch (err) {
+      console.error("Failed to fetch QR Codes", err);
+    }
+  };
+  useEffect(() => {
+      fetchQrCodes();
+    }, []);
 
   const handleSubmit = async (e) => {
     console.log("inside submit");
@@ -71,10 +86,25 @@ const TelegramSubscription = () => {
   );
 
   const renderScanner = () => (
-    <div className="mb-4">
+    <div className="mb-4 flex items-center flex-col w-full">
       <h2 className="text-lg font-semibold mb-2">Scan to Deposit</h2>
-      <div className="w-48 h-48 bg-gray-200 flex items-center justify-center rounded-md">
-        <span>QR Scanner</span>
+      <div className="w-52 h-52  bg-gray-200 flex items-center justify-center rounded-md">
+        <div className="">
+          {qrCodes?.map((qr) => (
+            <div key={qr._id} className="">
+              <img
+                src={`${import.meta.env.VITE_API_URL}${qr.imageUrl}`}
+                alt={qr.title}
+                className="w-auto object-contain"
+              />
+            </div>
+          ))}
+          {qrCodes.length === 0 && (
+            <p className="col-span-full text-gray-400 text-center">
+              No QR Codes uploaded yet.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

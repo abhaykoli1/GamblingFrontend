@@ -7,6 +7,7 @@ const Spinner = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
   const [rotation, setRotation] = useState(0);
+  const [cooldownMessage, setCooldownMessage] = useState("");
   const canvasRef = useRef(null);
   const [prizes, setPrizes] = useState([]);
   const [transactions, setTransactions] = useState([]);
@@ -124,6 +125,16 @@ const Spinner = () => {
   const spinWheel = () => {
     if (isSpinning || !prizes.length) return;
 
+    // ✅ Check cooldown
+    const lastSpin = localStorage.getItem("lastSpinTime");
+    const now = Date.now();
+    if (lastSpin && now - lastSpin < 3600000) {
+      return; // still in cooldown
+    }
+
+    // ✅ Save new spin time
+    localStorage.setItem("lastSpinTime", now);
+
     setIsSpinning(true);
     const finalRotation = getRandomRotation();
     let currentRotation = rotation;
@@ -154,6 +165,31 @@ const Spinner = () => {
 
     requestAnimationFrame(animate);
   };
+
+  // ✅ Check cooldown on load and update message every second
+  useEffect(() => {
+    const checkCooldown = () => {
+      const lastSpin = localStorage.getItem("lastSpinTime");
+      if (lastSpin) {
+        const now = Date.now();
+        const diff = now - lastSpin;
+        if (diff < 3600000) {
+          const remaining = 3600000 - diff;
+          const minutes = Math.floor(remaining / 60000);
+          const seconds = Math.floor((remaining % 60000) / 1000);
+          setCooldownMessage(
+            `You can spin again in ${minutes}m ${seconds}s`
+          );
+          return;
+        }
+      }
+      setCooldownMessage("");
+    };
+
+    checkCooldown();
+    const interval = setInterval(checkCooldown, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     drawSpinner(rotation);
@@ -192,10 +228,10 @@ const Spinner = () => {
       {/* Spin Button */}
       <button
         onClick={spinWheel}
-        disabled={isSpinning || !prizes.length}
+        disabled={isSpinning || !prizes.length || cooldownMessage}
         className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md disabled:bg-gray-500 hover:bg-blue-700 transition-colors"
       >
-        Spin
+        {cooldownMessage ? cooldownMessage : "Spin"}
       </button>
 
       {/* Result Message */}
