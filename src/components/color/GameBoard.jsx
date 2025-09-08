@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
-import GameHeader from './GameHeader';
-import BettingSection from './BettingSection';
-import HistorySection from './HistorySection';
-import { useSocket } from '../../context/SocketContext.jsx';
-import { placeBet, getGameHistory, getUserBets } from '../../services/colorAPI.js';
+import { useState, useEffect } from "react";
+import GameHeader from "./GameHeader";
+import BettingSection from "./BettingSection";
+import HistorySection from "./HistorySection";
+import { useSocket } from "../../context/SocketContext.jsx";
+import {
+  placeBet,
+  getGameHistory,
+  getUserBets,
+} from "../../services/colorAPI.js";
 
 const GameBoard = () => {
   const { currentRound, timeLeft, lastResult } = useSocket();
@@ -12,13 +16,13 @@ const GameBoard = () => {
   const [multiplier, setMultiplier] = useState(1);
   const [gameHistory, setGameHistory] = useState([]);
   const [userBets, setUserBets] = useState([]);
-  const [activeTab, setActiveTab] = useState('history');
+  const [activeTab, setActiveTab] = useState("history");
   const [showPopup, setShowPopup] = useState(false);
   const [popupTimer, setPopupTimer] = useState(5); // 5 sec timer
   const [savedResult, setSavedResult] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"))
-  const userId = user?._id
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
 
   // ✅ Jab lastResult change ho to data save karo aur popup dikhao
   useEffect(() => {
@@ -50,7 +54,7 @@ const GameBoard = () => {
         setGameHistory(response.data.data);
       }
     } catch (error) {
-      console.error('Error fetching game history:', error);
+      console.error("Error fetching game history:", error);
     }
   };
 
@@ -61,13 +65,13 @@ const GameBoard = () => {
         setUserBets(response.data.data);
       }
     } catch (error) {
-      console.error('Error fetching user bets:', error);
+      console.error("Error fetching user bets:", error);
     }
   };
 
   const handlePlaceBet = async () => {
     if (!selectedBet || !currentRound) {
-      alert('Please select a bet and wait for the next round');
+      alert("Please select a bet and wait for the next round");
       return;
     }
 
@@ -78,24 +82,24 @@ const GameBoard = () => {
         betValue: selectedBet.value,
         amount: betAmount,
         multiplier: multiplier,
-        userId: userId
+        userId: userId,
       };
 
       const response = await placeBet(betData);
       if (response.data.success) {
-        alert('Bet placed successfully!');
+        alert("Bet placed successfully!");
         setSelectedBet(null);
       }
     } catch (error) {
-      console.error('Error placing bet:', error);
-      alert('Failed to place bet');
+      console.error("Error placing bet:", error);
+      alert("Failed to place bet");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-transparent shadow-xl shadow-red-950 min-h-screen relative">
+    <div className="max-w-md mx-auto bg-[#38050c] shadow-xl shadow-red-950 min-h-screen relative">
       <GameHeader
-        period={currentRound?.period || '---'}
+        period={currentRound?.period || "---"}
         timeLeft={timeLeft}
         showPopup={showPopup}
         savedResult={savedResult}
@@ -133,7 +137,11 @@ const GameBoard = () => {
                 className={`w-20 h-20 flex items-center justify-center rounded-full text-white text-2xl font-bold shadow-lg
           ${savedResult?.winningColor === "green" ? "bg-green-500" : ""}
           ${savedResult?.winningColor === "red" ? "bg-red-500" : ""}
-          ${savedResult?.winningColor === "violet" ? "bg-purple-500" : "bg-gray-500"}`}
+          ${
+            savedResult?.winningColor === "violet"
+              ? "bg-purple-500"
+              : "bg-gray-500"
+          }`}
               >
                 {savedResult?.winningNumber ?? "-"}
               </div>
@@ -142,10 +150,11 @@ const GameBoard = () => {
             <p className="mt-4 text-lg text-gray-300">
               Size:{" "}
               <span
-                className={`font-semibold ${savedResult?.size?.toUpperCase() === "BIG"
-                  ? "text-red-400"
-                  : "text-green-400"
-                  }`}
+                className={`font-semibold ${
+                  savedResult?.size?.toUpperCase() === "BIG"
+                    ? "text-red-400"
+                    : "text-green-400"
+                }`}
               >
                 {savedResult?.size?.toUpperCase()}
               </span>
@@ -180,8 +189,6 @@ const GameBoard = () => {
           </div>
         </div>
       )}
-
-
     </div>
   );
 };

@@ -105,13 +105,13 @@ export default function ProfilePage() {
                         {user._id[user._id.length - 2]}
                       </p>
                     </span> */}
-
+                    {/* 
                     <a
                       href="/change-password"
                       className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"
                     >
                       Change Password
-                    </a>
+                    </a> */}
 
                     {games.map((gameKey) => {
                       const info = gameInfo[gameKey];
@@ -159,12 +159,12 @@ export default function ProfilePage() {
                       Ranking
                     </a>
 
-                    <a
+                    {/* <a
                       href="/"
                       className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"
                     >
                       Notification
-                    </a>
+                    </a> */}
                     <a
                       href="/"
                       className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"

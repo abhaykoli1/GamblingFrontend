@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const TelegramSubscription = () => {
   const [method, setMethod] = useState("Telegram"); // default
-  const [amount, setAmount] = useState(200);
+  const [amount, setAmount] = useState(100);
   const [payNumber, setPayNumber] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [telegramID, setTelegramID] = useState("");
@@ -36,8 +36,8 @@ const TelegramSubscription = () => {
     }
   };
   useEffect(() => {
-      fetchQrCodes();
-    }, []);
+    fetchQrCodes();
+  }, []);
 
   const handleSubmit = async (e) => {
     console.log("inside submit");
@@ -73,15 +73,41 @@ const TelegramSubscription = () => {
     if (method === "Telegram") return "₹";
     return cryptoType.toUpperCase();
   };
+  const quickAmounts = [100, 200, 300, 500, 1000, 2000, 3000, 5000];
 
   const renderAmountSelection = () => (
     <div className="mb-4 flex items-center flex-col w-full">
       <h2 className="text-lg font-medium flex justify-between mb-2 text-gray-200">
         Deposit Amount
       </h2>
-      <button className="px-4 py-2 w-3/4 rounded-md bg-[#9C1137] font-medium text-amber-200">
-        500
-      </button>
+
+      <input
+        type="number"
+        value={amount}
+        min={100}
+        max={5000}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder={`Enter amount in ${getCurrencySymbol()}`}
+        className="shadow-[#9C1137] shadow-xs px-4 py-2 rounded-md w-full text-white outline-none"
+      />
+      <div className="grid grid-cols-4 gap-3 mt-3">
+        {quickAmounts.map((amt) => (
+          <button
+            key={amt}
+            onClick={() => setAmount(amt)}
+            className={`px-4 py-2 rounded-md ${
+              amount === amt
+                ? "bg-[#9C1137] font-medium text-amber-200"
+                : "bg-[#3d1017] text-gray-200"
+            }`}
+          >
+            {amt}
+          </button>
+        ))}
+      </div>
+      {/* <button className="px-4 py-2 w-full mt-4 rounded-md bg-[#9C1137] font-medium text-amber-200">
+        Add
+      </button> */}
     </div>
   );
 
@@ -147,8 +173,8 @@ const TelegramSubscription = () => {
   );
 
   return (
-    <div className="bg-[#160003] text-white py-4 px-2 flex justify-center min-h-screen">
-      <div className="flex items-center flex-col min-h-screen">
+    <div className="bg-[#160003] text-white py-4 px-2 flex  justify-center min-h-screen">
+      <div className="flex items-center flex-col min-h-screen max-w-md w-full ">
         {/* Step 2 - Select Amount */}
         {renderAmountSelection()}
 

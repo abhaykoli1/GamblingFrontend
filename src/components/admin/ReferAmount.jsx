@@ -6,7 +6,7 @@ const API = `${import.meta.env.VITE_API_URL}/api/v1/refer-amount`;
 const ReferAmount = () => {
   const [amounts, setAmounts] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   const [newAmount, setNewAmount] = useState("");
   // Fetch all refer amounts
   const fetchAmounts = async () => {
@@ -53,22 +53,22 @@ const ReferAmount = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto text-white">
+    <div className="p-4 max-w-3xl mx-auto text-white">
       <h1 className="text-2xl font-bold mb-4">Refer Amounts</h1>
 
       {/* Add New Amount */}
       {amounts.length < 1 ? (
-        <div className="flex w-52 gap-2 mb-6">
+        <div className="flex flex-wrap  gap-2 mb-6">
           <input
             type="number"
             placeholder="Enter refer amount"
             value={newAmount}
             onChange={(e) => setNewAmount(e.target.value)}
-            className="border text-white p-2 flex-1 rounded text-black"
+            className="border text-white p-2 flex-1 rounded "
           />
           <button
             onClick={handleAddAmount}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-blue-600 w-full text-white px-4 py-2 rounded"
           >
             Add
           </button>

@@ -87,7 +87,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative h-10 w-10 flex justify-center items-center rounded-full bg-transparent text-amber-200 text-xl font-medium z-50 shadow-xs shadow-[#9C1137]">
+                <MenuButton className="relative cursor-pointer h-10 w-10 flex justify-center items-center rounded-full bg-transparent text-amber-200 text-xl font-medium z-50 shadow-xs shadow-[#9C1137]">
                   {user.fullName[0]}
                 </MenuButton>
               </div>
@@ -109,6 +109,7 @@ const Navbar = () => {
                       {user._id[user._id.length - 2]}
                     </p>
                   </span>
+
                   {user?.role === "admin" && (
                     <MenuItem>
                       <a
@@ -119,6 +120,7 @@ const Navbar = () => {
                       </a>
                     </MenuItem>
                   )}
+
                   <a
                     href="/change-password"
                     className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"
@@ -172,12 +174,12 @@ const Navbar = () => {
                     Ranking
                   </a>
 
-                  <a
+                  {/* <a
                     href="/"
                     className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"
                   >
                     Notification
-                  </a>
+                  </a> */}
                   <a
                     href="/"
                     className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"

@@ -31,29 +31,32 @@ const AdminForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-xl font-bold mb-4">📢 Admin: Set Notification</h2>
+    <section className="mx-auto max-w-md">
+      <h1 className="text-2xl text-white font-bold mb-4 text-center mt-6">
+        Refer Amounts
+      </h1>
+      <div className=" mx-4  p-6  bg-slate-700 text-white rounded-xl shadow-md">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="w-full !text-white border rounded-lg p-3 mb-4"
+            rows="4"
+            placeholder="Enter notification message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+          ></textarea>
 
-      <form onSubmit={handleSubmit}>
-        <textarea
-          className="w-full border rounded-lg p-3 mb-4"
-          rows="4"
-          placeholder="Enter notification message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-        ></textarea>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          >
+            Save Message
+          </button>
+        </form>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-        >
-          Save Message
-        </button>
-      </form>
-
-      {status && <p className="mt-4 text-sm">{status}</p>}
-    </div>
+        {status && <p className="mt-4 text-sm">{status}</p>}
+      </div>
+    </section>
   );
 };
 

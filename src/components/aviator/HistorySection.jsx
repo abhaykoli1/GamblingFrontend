@@ -94,7 +94,7 @@ const HistorySection = ({ activeTab, setActiveTab, liveBets, userBets }) => {
                   <span
                     className={`inline-block px-2 py-1 rounded text-xs font-medium`}
                   >
-                    {bet.betAmount}
+                    {bet.payoutAmount}
                   </span>
                 </div>
               </div>
