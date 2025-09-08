@@ -15,6 +15,7 @@ const AdminTabs = ({ selected, onSelect }) => {
     "QRCode Crypto",
     "Spinner Prices",
     "Refer Amount",
+    "Notification"
   ]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

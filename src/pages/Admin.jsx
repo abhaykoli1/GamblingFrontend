@@ -12,7 +12,7 @@ import QRCode from "../components/admin/QRCode";
 import AddSpinnerPrizes from "../components/admin/AddSpinnerPrices";
 import QRCodeCrypto from "../components/admin/QRCodeCrypto";
 import ReferAmount from "../components/admin/ReferAmount";
-
+import AdminForm from "../components/admin/addNotification";
 const Admin = () => {
   const [selectField, setSelectField] = useState("transaction");
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -40,6 +40,7 @@ const Admin = () => {
         {selectField === "QRCode" && <QRCode />}
         {selectField === "QRCode Crypto" && <QRCodeCrypto />}
         {selectField === "Refer Amount" && <ReferAmount />}
+        {selectField === "Notification" && <AdminForm />}
       </div>
     </div>
   );
