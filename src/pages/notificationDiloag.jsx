@@ -20,7 +20,7 @@ const AboutDialog = () => {
     // ✅ Step 2: Fetch from API
     fetch(`${import.meta.env.VITE_API_URL}/api/v1/notification/get`)
       .then((res) => res.json())
-      .then((data) => {
+    .then((data) => {
         if (data?.message) setMessage(data.message);
         else setOpen(false);
       });
