@@ -540,11 +540,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useAviatorSocket } from "../../context/AviatorSocketContext";
-import { getUserBets } from "../../services/aviatorApi";
+import { getUserBets,getAllBets } from "../../services/aviatorApi";
 import { History } from "lucide-react";
 import HistorySection from "./HistorySection";
 import Header from "./Header";
 import { useDeviceType } from "../../hooks/deviceType";
+import { all } from "axios";
 
 export default function AviatorGameScreen() {
   const {
@@ -593,6 +594,7 @@ export default function AviatorGameScreen() {
   const [hasCashedOut, setHasCashedOut] = useState(false);
   const [activeTab, setActiveTab] = useState("bets");
   const [userBets, setUserBets] = useState([]);
+  const [allBets, setAllBets] = useState([]);
 
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
@@ -637,6 +639,11 @@ export default function AviatorGameScreen() {
     if (!userId) return;
     try {
       const response = await getUserBets(userId);
+      const responseAll = await getAllBets();
+      console.log("All Bets:", responseAll);
+      if (responseAll.data.success) {
+        setAllBets(responseAll.data.data);
+      }
       if (response.data.success) {
         setUserBets(response.data.data);
       }
@@ -644,6 +651,8 @@ export default function AviatorGameScreen() {
       console.error("Error fetching game history:", error);
     }
   };
+
+
 
   // ===============================
   // Responsive canvas + animation
@@ -1031,7 +1040,7 @@ export default function AviatorGameScreen() {
           <HistorySection
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            liveBets={liveBets}
+            liveBets={allBets}
             userBets={userBets}
           />
         </div>

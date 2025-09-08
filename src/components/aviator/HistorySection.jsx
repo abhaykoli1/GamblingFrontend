@@ -40,7 +40,7 @@ const HistorySection = ({ activeTab, setActiveTab, liveBets, userBets }) => {
             <div className="grid grid-cols-3 gap-4 text-xs font-medium text-[#9f3e3e] pb-2 border-b text-center">
               <div>User</div>
               <div className="text-center">Bet Amount</div>
-              <div className="text-center">Cashed Out</div>
+              <div className="text-center">Result</div>
             </div>
 
             {liveBets.map((bet, index) => (
@@ -50,11 +50,11 @@ const HistorySection = ({ activeTab, setActiveTab, liveBets, userBets }) => {
                   {console.log(bet)}
                 </div>
                 <div className="text-sm font-medium">
-                  {bet.amount}
+                  {bet.betAmount}
                 </div>
                 <div className="text-center">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-medium`}>
-                    {bet.amount * bet.cashOutMultiplier}
+                    {bet.result}
                   </span>
                 </div>
               </div>
