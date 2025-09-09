@@ -13,6 +13,7 @@ import AddSpinnerPrizes from "../components/admin/AddSpinnerPrices";
 import QRCodeCrypto from "../components/admin/QRCodeCrypto";
 import ReferAmount from "../components/admin/ReferAmount";
 import AdminForm from "../components/admin/addNotification";
+import AddTelegramAmount from "../components/admin/AddTelegramAmount";
 const Admin = () => {
   const [selectField, setSelectField] = useState("transaction");
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -32,6 +33,7 @@ const Admin = () => {
         {selectField === "All Users" && <AllUsers />}
         {selectField === "Transaction" && <TransactionHistory />}
         {selectField === "Deposite" && <Deposite />}
+        {selectField === "Telegram Deposite" && <AddTelegramAmount />}
         {selectField === "Games" && <Games />}
         {selectField === "Withdrawals" && <Withdrawals />}
         {selectField === "Admin Controller" && <AdminController />}

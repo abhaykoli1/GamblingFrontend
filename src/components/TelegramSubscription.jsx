@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const API = `${import.meta.env.VITE_API_URL}/api/v1/telegram-amount`;
+
 const TelegramSubscription = () => {
   const [method, setMethod] = useState("Telegram"); // default
   const [amount, setAmount] = useState(100);
@@ -16,6 +18,23 @@ const TelegramSubscription = () => {
   const [qrCodes, setQrCodes] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user._id;
+  // Fetch all telegram amounts
+
+  const [teleAmount, setAmounts] = useState([]);
+  const fetchAmounts = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/v1/telegram-amount`
+      );
+      setAmounts(res.data.data || res.data || []);
+    } catch (err) {
+      console.log("Fetch error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAmounts();
+  }, []);
 
   const details = {
     payNumber,
@@ -81,7 +100,11 @@ const TelegramSubscription = () => {
         Deposit Amount
       </h2>
 
-      <input
+      <span className="bg-red-950 w-1/2 text-center py-2 rounded-xl">
+        {teleAmount[0]?.amount}
+      </span>
+
+      {/* <input
         type="number"
         value={amount}
         min={100}
@@ -104,10 +127,7 @@ const TelegramSubscription = () => {
             {amt}
           </button>
         ))}
-      </div>
-      {/* <button className="px-4 py-2 w-full mt-4 rounded-md bg-[#9C1137] font-medium text-amber-200">
-        Add
-      </button> */}
+      </div> */}
     </div>
   );
 

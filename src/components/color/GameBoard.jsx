@@ -97,7 +97,7 @@ const GameBoard = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[#38050c] shadow-xl shadow-red-950 min-h-screen relative">
+    <div className="max-w-md mx-auto bg-[#010125] shadow-xl shadow-red-950 min-h-screen relative">
       <GameHeader
         period={currentRound?.period || "---"}
         timeLeft={timeLeft}
@@ -125,7 +125,7 @@ const GameBoard = () => {
         userBets={userBets}
       />
 
-      {showPopup && (
+      {/* {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
 
@@ -188,7 +188,7 @@ const GameBoard = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

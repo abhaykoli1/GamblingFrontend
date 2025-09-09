@@ -12,12 +12,14 @@ import { Link } from "react-router-dom";
 import BalanceButton from "./BalanceButton";
 import { Wallet, X } from "lucide-react";
 import { ReferEarn } from "./ReferEarn";
+import { HelpAndSupport } from "./HelpAndSupport";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
   const [games, setGames] = useState([]);
   const [isReferOpen, setIsReferOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/visible-games`)
@@ -180,12 +182,22 @@ const Navbar = () => {
                   >
                     Notification
                   </a> */}
+
                   <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsHelpOpen(true);
+                    }}
                     href="/"
                     className="block px-4 py-2 text-sm hover:shadow-xs shadow-red-500 focus:outline-none cursor-pointer"
                   >
                     Help & Support
                   </a>
+
+                  <HelpAndSupport
+                    isOpen={isHelpOpen}
+                    onClose={() => setIsHelpOpen(false)}
+                  />
 
                   <a
                     onClick={(e) => {

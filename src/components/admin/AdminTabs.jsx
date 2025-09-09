@@ -10,6 +10,7 @@ const AdminTabs = ({ selected, onSelect }) => {
     "Withdrawals",
     "Admin Controller",
     "Deposite",
+    "Telegram Deposite",
     "Telegram",
     "QRCode",
     "QRCode Crypto",

@@ -32,17 +32,17 @@ const HistorySection = ({
   };
 
   return (
-    <div className="bg-transparent border-t-1 border-[#9f3e3e] pt-2 w-full text-white">
+    <div className="bg-transparent  pt-2 w-full text-white">
       {/* Tab Navigation */}
       <div className="flex px-4 gap-3">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 py-2  rounded-full cursor-pointer  text-sm font-medium transition-colors ${
+            className={`flex-1 py-2  rounded-md cursor-pointer  text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? "text-white bg-transparen shadow-xs border-1 border-white bg-red-600 shadow-amber-700"
-                : "text-gray-0 hover:text-white bg-red-500 border-1 border-transparent text-white"
+                ? "text-white  shadow-xs  border-white  bg-gradient-to-b from-teal-500  to-sky-500"
+                : "text-gray-0 hover:text-white bg-[#020240]  text-white"
             }`}
           >
             {tab.label}
@@ -51,17 +51,17 @@ const HistorySection = ({
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 max-h-96 overflow-y-auto">
+      <div className=" max-h-96 overflow-y-auto bg-[#030342] rounded-t-xl shadow-2xl mx-4 mt-4">
         {activeTab === "history" && (
           <div className="space-y-2">
-            <div className="grid grid-cols-3 gap-4 text-xs font-medium text-gray-300 pb-2 border-b">
+            <div className="grid grid-cols-3 gap-4 text-xs text-center rounded-t-xl px-4 py-4 bg-[#2525a7] font-medium  text-gray-300 ">
               <div>Period</div>
               <div className="text-center">Number</div>
               <div className="text-center">Result</div>
             </div>
 
             {lastResult && (
-              <div className="grid grid-cols-3 gap-4 py-2 bg-yellow-50 text-black pl-2 rounded-lg animate-pulse">
+              <div className="grid grid-cols-3 px-3 gap-4 py-3 mx-3 bg-yellow-50 text-black rounded-lg animate-pulse">
                 <div className="text-sm font-medium">
                   {formatPeriod(lastResult.period)}
                 </div>
@@ -93,7 +93,7 @@ const HistorySection = ({
             {gameHistory.map((round) => (
               <div
                 key={round._id}
-                className="grid grid-cols-3 gap-4 py-2 pl-2 hover:bg-gray-50 hover:text-black rounded"
+                className="grid grid-cols-3 gap-4 px-3 mx-3 hover:bg-gray-50 hover:text-black rounded"
               >
                 <div className="text-sm font-medium">
                   {formatPeriod(round.period)}
@@ -134,14 +134,14 @@ const HistorySection = ({
 
         {activeTab === "chart" && (
           <div className="space-y-2">
-            <div className="grid grid-cols-2 text-xs font-medium text-gray-300 pb-2 border-b">
+            <div className="grid grid-cols-2 text-center text-xs px-4 py-4 bg-[#2525a7] font-medium text-gray-300  ">
               <div>Period</div>
               <div className="text-center">Number</div>
             </div>
             {gameHistory.map((round) => (
               <div
                 key={round._id}
-                className="grid grid-cols-2 pl-2 cursor:pointer hover:bg-gray-50 hover:text-black cursor-pointer rounded"
+                className="grid grid-cols-2 px-3 cursor:pointer hover:bg-gray-50 hover:text-black cursor-pointer rounded"
               >
                 <div className="text-sm font-medium">
                   {formatPeriod(round.period)}
@@ -186,7 +186,7 @@ const HistorySection = ({
 
         {activeTab === "my" && (
           <div className="space-y-2">
-            <div className="grid grid-cols-2 gap-4 text-center text-xs font-medium text-gray-300 pb-2 border-b">
+            <div className="grid grid-cols-2 gap-4 px-4 py-4 text-center bg-[#2525a7]  text-xs font-medium text-gray-300  ">
               <div>Date</div>
               <div className="text-center">Balance</div>
             </div>
