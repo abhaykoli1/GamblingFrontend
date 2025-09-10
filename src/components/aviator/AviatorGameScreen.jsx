@@ -547,6 +547,10 @@ import Header from "./Header";
 import { useDeviceType } from "../../hooks/deviceType";
 import { all } from "axios";
 import WalletBalance from "../WalletBalance";
+<<<<<<< HEAD
+=======
+import { useBalance } from "../../context/BalanceContext";
+>>>>>>> 67af6f3bc81521692233e4d8da65ff6f114f0c66
 
 export default function AviatorGameScreen() {
   const {
@@ -596,7 +600,7 @@ export default function AviatorGameScreen() {
   const [activeTab, setActiveTab] = useState("bets");
   const [userBets, setUserBets] = useState([]);
   const [allBets, setAllBets] = useState([]);
-
+  const { balance, setBalance, loadBalance } = useBalance();
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const startTsRef = useRef(null);
@@ -883,6 +887,7 @@ export default function AviatorGameScreen() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to place bet");
       setHasBet(true);
+      setBalance(prev => prev - bet);
       setHasCashedOut(false);
     } catch (error) {
       console.error("Error placing bet:", error.message);
