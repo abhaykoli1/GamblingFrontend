@@ -540,12 +540,13 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useAviatorSocket } from "../../context/AviatorSocketContext";
-import { getUserBets,getAllBets } from "../../services/aviatorApi";
+import { getUserBets, getAllBets } from "../../services/aviatorApi";
 import { History } from "lucide-react";
 import HistorySection from "./HistorySection";
 import Header from "./Header";
 import { useDeviceType } from "../../hooks/deviceType";
 import { all } from "axios";
+import WalletBalance from "../WalletBalance";
 
 export default function AviatorGameScreen() {
   const {
@@ -651,8 +652,6 @@ export default function AviatorGameScreen() {
       console.error("Error fetching game history:", error);
     }
   };
-
-
 
   // ===============================
   // Responsive canvas + animation
@@ -913,6 +912,7 @@ export default function AviatorGameScreen() {
 
   const getPotentialWin = () => (bet * multiplier).toFixed(2);
 
+  console.log(user?._id);
   return (
     <div className="min-h-screen bg-[#160003] text-white">
       <Header />
