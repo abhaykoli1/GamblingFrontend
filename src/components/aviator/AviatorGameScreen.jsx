@@ -540,12 +540,14 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useAviatorSocket } from "../../context/AviatorSocketContext";
-import { getUserBets,getAllBets } from "../../services/aviatorApi";
+import { getUserBets, getAllBets } from "../../services/aviatorApi";
 import { History } from "lucide-react";
 import HistorySection from "./HistorySection";
 import Header from "./Header";
 import { useDeviceType } from "../../hooks/deviceType";
 import { all } from "axios";
+import WalletBalance from "../WalletBalance";
+import { useBalance } from "../../context/BalanceContext";
 
 export default function AviatorGameScreen() {
   const {
@@ -595,7 +597,7 @@ export default function AviatorGameScreen() {
   const [activeTab, setActiveTab] = useState("bets");
   const [userBets, setUserBets] = useState([]);
   const [allBets, setAllBets] = useState([]);
-
+  const { balance, setBalance, loadBalance } = useBalance();
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const startTsRef = useRef(null);
@@ -651,8 +653,6 @@ export default function AviatorGameScreen() {
       console.error("Error fetching game history:", error);
     }
   };
-
-
 
   // ===============================
   // Responsive canvas + animation
@@ -884,6 +884,7 @@ export default function AviatorGameScreen() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to place bet");
       setHasBet(true);
+      setBalance(prev => prev - bet);
       setHasCashedOut(false);
     } catch (error) {
       console.error("Error placing bet:", error.message);
@@ -913,6 +914,7 @@ export default function AviatorGameScreen() {
 
   const getPotentialWin = () => (bet * multiplier).toFixed(2);
 
+  console.log(user?._id);
   return (
     <div className="min-h-screen bg-[#160003] text-white">
       <Header />

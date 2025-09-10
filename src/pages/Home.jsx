@@ -53,7 +53,7 @@ const Home = () => {
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#160003] pb-12">
       <AboutDialog />
-      <div className="fixed md:top-1/2 top-1/3 -translate-y-1/2 right-5">
+      <div className="fixed !z-40  top-1/2  -translate-y-1/2 right-5">
         <TelegramMenu />
       </div>
       <span className="">
