@@ -32,15 +32,15 @@ export default function AviatorGameScreen() {
   const [nextRoundTimer, setNextRoundTimer] = useState(0);
     const [showWinPopup, setShowWinPopup] = useState(false);
   useEffect(() => {
-    const audio = new Audio("/main.mp3");
-    audio.loop = true;
-    audio.play().catch((err) => {
-      console.error("Autoplay failed:", err);
-    });
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
+    // const audio = new Audio("/main.mp3");
+    // audio.loop = true;
+    // audio.play().catch((err) => {
+    //   console.error("Autoplay failed:", err);
+    // });
+    // return () => {
+    //   audio.pause();
+    //   audio.currentTime = 0;
+    // };
   }, []);
 
   const toggleHistory = () => setIsExpanded((prev) => !prev);
