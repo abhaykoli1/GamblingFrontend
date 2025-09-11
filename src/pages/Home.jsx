@@ -65,14 +65,18 @@ const Home = () => {
 
       <div className="md:flex hidden flex-col">
         <div className="py-4 flex gap-4 text-white md:flex-row flex-col-reverse items-center px-4 md:px-24">
-          <div className="text-center flex gap-2">
-            <Link to={"/signup"}>
+          <div className="text-center flex items-center w-full flex-col gap-2">
+            <Link to={"/signup"} className=" w-full">
               <Button
                 children="Register"
-                className="bg-blue-500 hover:bg-blue-600"
+                className="bg-transparent lg:w-[50%] w-full -full  shadow-xs shadow-[#9C1137] hover:bg-transparent"
+                // className="bg-blue-500  hover:bg-blue-600"
               />
             </Link>
-            <Button children="Download app"></Button>
+            <Button
+              className="bg-gradient-to-b lg:w-[70%] h-12 w-full from-[#9C1137] via-[#9C1137]  to-black"
+              children="Download Our App"
+            ></Button>
           </div>
           <Slider />
         </div>

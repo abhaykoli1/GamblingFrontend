@@ -4,6 +4,7 @@ import Timer from "./Timer";
 
 function Color() {
   useEffect(() => {
+<<<<<<< HEAD
     // const audio = new Audio("/main.mp3");
     // audio.loop = true;
     // audio.play().catch((err) => {
@@ -14,6 +15,25 @@ function Color() {
     //   audio.pause();
     //   audio.currentTime = 0;
     // };
+=======
+    const audio = new Audio("/main.mp3");
+
+    audio.loop = true; // Loop the sound
+
+    audio.loop = true;
+
+    audio.play().catch((err) => {
+      console.error("Autoplay failed:", err);
+    });
+
+    return () => {
+      audio.pause();
+
+      audio.currentTime = 0; // Reset if needed
+
+      audio.currentTime = 0;
+    };
+>>>>>>> 860192700210118fbd2d6d22a3914cee129c8669
   }, []);
 
   return (

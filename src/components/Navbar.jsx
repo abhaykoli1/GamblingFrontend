@@ -93,7 +93,7 @@ const Navbar = () => {
                   {user.fullName[0]}
                 </MenuButton>
               </div>
-
+              {/* 
               <Transition
                 enter="transition-transform transition-opacity duration-300 ease-out"
                 enterFrom="translate-x-full opacity-0"
@@ -101,6 +101,14 @@ const Navbar = () => {
                 leave="transition-transform transition-opacity duration-300 ease-in"
                 leaveFrom="translate-x-0 opacity-100"
                 leaveTo="translate-x-full opacity-0"
+              > */}
+              <Transition
+                enter="transition-transform transition-opacity duration-300 ease-out"
+                enterFrom="-translate-x-full opacity-0" // start from left
+                enterTo="translate-x-0 opacity-100" // slide in to center
+                leave="transition-transform transition-opacity duration-300 ease-in"
+                leaveFrom="translate-x-0 opacity-100" // start at center
+                leaveTo="-translate-x-full opacity-0" // exit to left
               >
                 <MenuItems className="fixed top-0 left-0 z-100 h-screen overflow-y-auto w-64 md:w-64 sm:w-full transform bg-[#160003] focus:outline-none pt-4">
                   <span className="block px-4 py-2 text-sm cursor-pointer">
