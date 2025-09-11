@@ -16,23 +16,23 @@ function Color() {
     //   audio.currentTime = 0;
     // };
 
-    const audio = new Audio("/main.mp3");
+    // const audio = new Audio("/main.mp3");
 
-    audio.loop = true; // Loop the sound
+    // audio.loop = true; // Loop the sound
 
-    audio.loop = true;
+    // audio.loop = true;
 
-    audio.play().catch((err) => {
-      console.error("Autoplay failed:", err);
-    });
+    // audio.play().catch((err) => {
+    //   console.error("Autoplay failed:", err);
+    // });
 
-    return () => {
-      audio.pause();
+    // return () => {
+    //   audio.pause();
 
-      audio.currentTime = 0; // Reset if needed
+    //   audio.currentTime = 0; // Reset if needed
 
-      audio.currentTime = 0;
-    };
+    //   audio.currentTime = 0;
+    // };
 
   }, []);
 

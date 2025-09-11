@@ -8,7 +8,9 @@ import {
   getGameHistory,
   getUserBets,
 } from "../../services/colorAPI.js";
+import WinDialog from "./winningDiloagbox.jsx";
 import { useBalance } from "../../context/BalanceContext";
+
 const GameBoard = () => {
   const { currentRound, timeLeft, lastResult } = useSocket();
   const [selectedBet, setSelectedBet] = useState(null);
@@ -21,6 +23,7 @@ const GameBoard = () => {
   const [popupTimer, setPopupTimer] = useState(5); // 5 sec timer
   const [savedResult, setSavedResult] = useState(null);
   const { balance, setBalance, loadBalance } = useBalance();
+  const [winingLoad, setWiningLoad] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
@@ -53,6 +56,12 @@ const GameBoard = () => {
       const response = await getGameHistory();
       if (response.data.success) {
         setGameHistory(response.data.data);
+        const latest = response.data.data[0];
+        const userBet = getAllBets();
+        console.log("User Bets:", userBet, "Latest Result:", latest);
+        if (userBet.period === latest.period && userBet.winningNumber === latest.betValue) {
+          setWiningLoad(true);
+        }
       }
     } catch (error) {
       console.error("Error fetching game history:", error);
@@ -69,6 +78,27 @@ const GameBoard = () => {
       console.error("Error fetching user bets:", error);
     }
   };
+  function getAllBets() {
+    return JSON.parse(localStorage.getItem("betBox")) || [];
+  }
+
+  function saveBetData(newBet) {
+    // 'betBox' key ke andar array me saare bets save honge
+    const existing = JSON.parse(localStorage.getItem("betBox")) || [];
+
+    // Example: same period aane par update karna
+    const updated = [...existing];
+    const index = updated.findIndex(item => item.period === newBet.period);
+
+    if (index >= 0) {
+      updated[index] = newBet; // update if same period
+    } else {
+      updated.push(newBet);    // else add new
+    }
+
+    localStorage.setItem("betBox", JSON.stringify(updated));
+  }
+
 
   const handlePlaceBet = async () => {
     if (!selectedBet || !currentRound) {
@@ -89,6 +119,7 @@ const GameBoard = () => {
       const response = await placeBet(betData);
       console.log("Bet Response:", response);
       if (response.data.success) {
+        saveBetData(betData);
         alert("Bet placed successfully!");
         setBalance(prev => prev - betAmount);
         setSelectedBet(null);
@@ -192,6 +223,12 @@ const GameBoard = () => {
           </div>
         </div>
       )} */}
+
+      <WinDialog
+        open={winingLoad}                  // 👉 sirf true pe show
+        amount={savedResult?.winningAmount || betAmount}
+        onClose={() => setWiningLoad(false)} // Close button par false set
+      />
     </div>
   );
 };
