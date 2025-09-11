@@ -10,6 +10,7 @@ import {
 } from "../../services/colorAPI.js";
 import WinDialog from "./winningDiloagbox.jsx";
 import { useBalance } from "../../context/BalanceContext";
+import Timer from "../../pages/Timer.jsx";
 
 const GameBoard = () => {
   const { currentRound, timeLeft, lastResult } = useSocket();
@@ -24,6 +25,9 @@ const GameBoard = () => {
   const [savedResult, setSavedResult] = useState(null);
   const { balance, setBalance, loadBalance } = useBalance();
   const [winingLoad, setWiningLoad] = useState(false);
+
+
+  console.log("Time Left", timeLeft);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
@@ -50,6 +54,7 @@ const GameBoard = () => {
     }
     return () => clearTimeout(timer);
   }, [showPopup, popupTimer]);
+
 
   const fetchGameHistory = async () => {
     try {
@@ -132,6 +137,8 @@ const GameBoard = () => {
 
   return (
     <div className="max-w-md mx-auto bg-[#010125] shadow-xl shadow-red-950 min-h-screen relative">
+
+        <Timer  timeLeft={timeLeft}/>
       <GameHeader
         period={currentRound?.period || "---"}
         timeLeft={timeLeft}

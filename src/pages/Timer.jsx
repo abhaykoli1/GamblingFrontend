@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from "react";
 
-export default function Timer({ onFinish }) {
-  const [time, setTime] = useState(5);
+export default function Timer({ timeLeft }) {
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
-    if (time === 0) {
-      if (onFinish) onFinish(); // parent ko inform karega
-      return;
-    }
+    // run only when parent sets timeLeft to 5
+    if (timeLeft !== 5) return;
+
+    setTime(5); // reset to 5
+
     const interval = setInterval(() => {
-      setTime((prev) => prev - 1);
+      setTime((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval); // stop at 0
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [time, onFinish]);
+  }, [timeLeft]);
 
-  if (time === 0) return null; // 👈 zero hone ke baad gayab
+  // hide once countdown hits 0
+  if (timeLeft ===  0 || timeLeft > 5) return null;
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-50">
       <div className="flex space-x-2">
-        {String(time)
+        {String(timeLeft)
           .padStart(2, "0")
           .split("")
           .map((digit, idx) => (
