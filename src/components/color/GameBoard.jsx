@@ -8,7 +8,7 @@ import {
   getGameHistory,
   getUserBets,
 } from "../../services/colorAPI.js";
-
+import { useBalance } from "../../context/BalanceContext";
 const GameBoard = () => {
   const { currentRound, timeLeft, lastResult } = useSocket();
   const [selectedBet, setSelectedBet] = useState(null);
@@ -20,6 +20,7 @@ const GameBoard = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupTimer, setPopupTimer] = useState(5); // 5 sec timer
   const [savedResult, setSavedResult] = useState(null);
+  const { balance, setBalance, loadBalance } = useBalance();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
@@ -86,8 +87,10 @@ const GameBoard = () => {
       };
 
       const response = await placeBet(betData);
+      console.log("Bet Response:", response);
       if (response.data.success) {
         alert("Bet placed successfully!");
+        setBalance(prev => prev - betAmount);
         setSelectedBet(null);
       }
     } catch (error) {

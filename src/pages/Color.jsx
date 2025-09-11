@@ -4,16 +4,16 @@ import Timer from "./Timer";
 
 function Color() {
   useEffect(() => {
-    const audio = new Audio("/main.mp3");
-    audio.loop = true;
-    audio.play().catch((err) => {
-      console.error("Autoplay failed:", err);
-    });
+    // const audio = new Audio("/main.mp3");
+    // audio.loop = true;
+    // audio.play().catch((err) => {
+    //   console.error("Autoplay failed:", err);
+    // });
 
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
+    // return () => {
+    //   audio.pause();
+    //   audio.currentTime = 0;
+    // };
   }, []);
 
   return (
