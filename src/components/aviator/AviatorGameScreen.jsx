@@ -5,8 +5,6 @@ import { History } from "lucide-react";
 import HistorySection from "./HistorySection";
 import Header from "./Header";
 import { useDeviceType } from "../../hooks/deviceType";
-import { all } from "axios";
-import WalletBalance from "../WalletBalance";
 
 import { useBalance } from "../../context/BalanceContext";
 
@@ -33,17 +31,17 @@ export default function AviatorGameScreen() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [nextRoundTimer, setNextRoundTimer] = useState(0);
 
-  // useEffect(() => {
-  //   const audio = new Audio("/main.mp3");
-  //   audio.loop = true;
-  //   audio.play().catch((err) => {
-  //     console.error("Autoplay failed:", err);
-  //   });
-  //   return () => {
-  //     audio.pause();
-  //     audio.currentTime = 0;
-  //   };
-  // }, []);
+  useEffect(() => {
+    const audio = new Audio("/main.mp3");
+    audio.loop = true;
+    audio.play().catch((err) => {
+      console.error("Autoplay failed:", err);
+    });
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   const toggleHistory = () => setIsExpanded((prev) => !prev);
 
