@@ -30,17 +30,17 @@ export default function AviatorGameScreen() {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [nextRoundTimer, setNextRoundTimer] = useState(0);
-
+    const [showWinPopup, setShowWinPopup] = useState(false);
   useEffect(() => {
-    const audio = new Audio("/main.mp3");
-    audio.loop = true;
-    audio.play().catch((err) => {
-      console.error("Autoplay failed:", err);
-    });
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
+    // const audio = new Audio("/main.mp3");
+    // audio.loop = true;
+    // audio.play().catch((err) => {
+    //   console.error("Autoplay failed:", err);
+    // });
+    // return () => {
+    //   audio.pause();
+    //   audio.currentTime = 0;
+    // };
   }, []);
 
   const toggleHistory = () => setIsExpanded((prev) => !prev);
@@ -346,7 +346,10 @@ export default function AviatorGameScreen() {
       console.error("Error placing bet:", error.message);
     }
   };
+  const closePopup = () => {
+    setShowWinPopup(false);
 
+  };
   const handleCashOut = async () => {
     if (!isConnected || !hasBet || hasCashedOut || !userId) return;
     try {
@@ -363,6 +366,7 @@ export default function AviatorGameScreen() {
       const audio1 = new Audio("/win.wav");
       audio1.play().catch(() => {});
       setHasCashedOut(true);
+      
     } catch (error) {
       console.error("Error during cash out:", error.message);
     }
@@ -491,6 +495,15 @@ export default function AviatorGameScreen() {
           </div>
         </div>
       </div>
+      {showWinPopup && (
+        <WinPopup
+          winAmount={winAmount}
+          multiplier={getCurrentMultiplier()}
+          betAmount={betAmount}
+          gameState={gameState}
+          onClose={closePopup}
+        />
+      )}
 
       {/* History section */}
       <div className="w-full flex justify-center md:px-6">
