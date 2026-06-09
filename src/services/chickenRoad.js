@@ -1,9 +1,9 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 
 const startChickenGame = async ( userId, betAmount, difficulty) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/chicken-road/start`, {
+    const response = await axiosInstance.post(`/api/v1/chicken-road/start`, {
       userId,
       gameType: 'chicken',
       betAmount: betAmount,
@@ -17,9 +17,20 @@ const startChickenGame = async ( userId, betAmount, difficulty) => {
   }
 };
 
+const goToNextChickenStep = async () => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/chicken-road/go`);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error moving chicken:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
 const stopChickenGame = async ( userId, betAmount, payout ) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/chicken-road/stop`, {
+    const response = await axiosInstance.post(`/api/v1/chicken-road/stop`, {
       userId,
       betAmount,
       payout
@@ -34,5 +45,6 @@ const stopChickenGame = async ( userId, betAmount, payout ) => {
 
 export {
     startChickenGame,
+    goToNextChickenStep,
     stopChickenGame
 }

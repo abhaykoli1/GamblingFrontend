@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import BottomBar from "../components/BottomBar";
 import TelegramMenu from "../components/TelegramMenu";
 import AboutDialog from "./notificationDiloag";
+import BannerCarousel from "../components/BannerCarousel";
 
 const Home = () => {
   const [games, setGames] = useState([]);
@@ -59,6 +60,7 @@ const Home = () => {
       <span className="">
         <Navbar />
       </span>
+      <BannerCarousel />
       <div className="border fixed left-0 bottom-0 z-20">
         <BottomBar />
       </div>

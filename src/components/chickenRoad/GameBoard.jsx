@@ -3,7 +3,7 @@ import ChickenSprite from "./ChickenSprite";
 import MultiplierStep from "./MultiplierStep";
 import WinPopup from "./WinPopup";
 import { useAuth } from "../../context/AuthContext";
-import { startChickenGame, stopChickenGame } from "../../services/chickenRoad";
+import { goToNextChickenStep, startChickenGame, stopChickenGame } from "../../services/chickenRoad";
 import { useBalance } from "../../context/BalanceContext";
 import { FireSVG } from "./FireSVG";
 
@@ -127,69 +127,79 @@ const GameBoard = () => {
 
 
   // Go to next position
-  const goNext = () => {
+  const goNext = async () => {
     if (gameState !== 'playing') return;
 
-    const nextPosition = chickenPosition + 1;
-    const nextMultiplier = multipliers[nextPosition];
+    try {
+      const response = await goToNextChickenStep();
+      const nextPosition = chickenPosition + 1;
+      const nextMultiplier = response.data.multiplier;
 
-    // Check if next multiplier is 0 (game over)
-    if (nextMultiplier === 0) {
-      const fireAudio = new Audio('/fire.m4a');
-      const loseAudio = new Audio('/lose.wav');
+      // Check if next multiplier is 0 (game over)
+      if (response.data.crashed || nextMultiplier === 0) {
+        const fireAudio = new Audio('/fire.m4a');
+        const loseAudio = new Audio('/lose.wav');
 
-      fireAudio.play()
-        .then(() => {
-          fireAudio.onended = () => {
-            loseAudio.play().catch((e) => {
-              console.warn('Lose sound failed:', e);
-            });
-          };
-        })
-        .catch((e) => {
-          console.warn('Fire sound failed:', e);
-        });
+        fireAudio.play()
+          .then(() => {
+            fireAudio.onended = () => {
+              loseAudio.play().catch((e) => {
+                console.warn('Lose sound failed:', e);
+              });
+            };
+          })
+          .catch((e) => {
+            console.warn('Fire sound failed:', e);
+          });
+        setChickenPosition(nextPosition);
+        setVisitedPositions(prev => [...prev, nextPosition]);
+        setGameState('gameOver');
+        setTimeout(() => {
+          setShowWinPopup(true);
+          setWinAmount(0);
+        }, 1000);
+        return;
+      }
+
+      // Move chicken to next position
       setChickenPosition(nextPosition);
       setVisitedPositions(prev => [...prev, nextPosition]);
-      setGameState('gameOver');
-      setTimeout(() => {
-        setShowWinPopup(true);
-        setWinAmount(0);
-        return;
-      }, 1000);
-    }
 
-    // Move chicken to next position
-    setChickenPosition(nextPosition);
-    setVisitedPositions(prev => [...prev, nextPosition]);
-
-    // Check auto cashout
-    if (nextMultiplier >= autoCashout) {
-      cashOut(nextMultiplier);
+      // Check auto cashout
+      if (nextMultiplier >= autoCashout) {
+        cashOut(nextMultiplier);
+      }
+    } catch (err) {
+      console.error('Failed to move chicken:', err);
     }
   };
 
   // Cash out function
-  const cashOut = (multiplier = null) => {
+  const cashOut = async (multiplier = null) => {
     if (gameState !== 'playing') return;
 
     const currentMultiplier = multiplier || multipliers[chickenPosition];
-    const winnings = betAmount * currentMultiplier;
+    const estimatedWinnings = betAmount * currentMultiplier;
 
-    stopChickenGame(user._id, betAmount, winnings)
-    const audio = new Audio('/win.wav');
-    audio.play().catch((e) => {
-      console.warn('Playback failed:', e);
-    });
+    try {
+      const response = await stopChickenGame(user._id, betAmount, estimatedWinnings);
+      const winnings = response.data.payout;
+      const audio = new Audio('/win.wav');
+      audio.play().catch((e) => {
+        console.warn('Playback failed:', e);
+      });
 
-    setWinAmount(winnings);
-    setBalance(prev => prev + winnings);
-    setGameState('won');
-    setShowWinPopup(true);
+      setWinAmount(winnings);
+      setBalance(prev => prev + winnings);
+      setGameState('won');
+      setShowWinPopup(true);
 
-    // Update best multiplier if current is better
-    if (currentMultiplier > bestMultiplier) {
-      setBestMultiplier(currentMultiplier);
+      // Update best multiplier if current is better
+      if (currentMultiplier > bestMultiplier) {
+        setBestMultiplier(currentMultiplier);
+      }
+    } catch (err) {
+      console.error('Failed to cash out:', err);
     }
   };
 

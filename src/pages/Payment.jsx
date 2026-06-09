@@ -15,7 +15,7 @@ const Payment = () => {
         const options = {
             key: import.meta.env.VITE_RAZORPAY_API_KEY,
             currency: "INR",
-            name: "Gambling Website",
+            name: "Infinity games",
             description: "Ammount added using upi",
             amount: order.amount,
             order_id: order.id,

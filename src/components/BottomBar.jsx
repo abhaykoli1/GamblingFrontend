@@ -28,17 +28,17 @@ const BottomBar = ({ hidden }) => {
     mining: {
       displayName: "Gold Miner Quest",
       image: "/header.png",
-      link: "mines",
+      link: "/mines",
     },
     aviator: {
       displayName: "Aviator",
       image: "/header.png",
-      link: "mines",
+      link: "/aviator",
     },
     color: {
       displayName: "Color Trading",
       image: "/header.png",
-      link: "mines",
+      link: "/color-trading",
     },
   };
 

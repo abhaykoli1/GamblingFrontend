@@ -17,6 +17,7 @@ const AdminTabs = ({ selected, onSelect }) => {
     "Spinner Prices",
     "Refer Amount",
     "Notification",
+    "Banners",
   ]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

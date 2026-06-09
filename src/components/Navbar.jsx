@@ -40,24 +40,30 @@ const Navbar = () => {
     mining: {
       displayName: "Gold Miner Quest",
       image: "/header.png",
-      link: "mines",
+      link: "/mines",
     },
     aviator: {
       displayName: "Aviator",
       image: "/header.png",
-      link: "mines",
+      link: "/aviator",
     },
     color: {
       displayName: "Color Trading",
       image: "/header.png",
-      link: "mines",
+      link: "/color-trading",
     },
   };
 
   return (
     <nav className="bg-transparent w-full py-3 ">
       <div className="text-white flex justify-between items-center px-6 md:px-20">
-        <div className="">LOGO</div>
+        <Link to="/" className="flex items-center">
+          <img
+            src="/infinity-games-logo.png"
+            alt="Infinity games"
+            className="h-12 w-auto object-contain md:h-14"
+          />
+        </Link>
         {isAuthenticated ? (
           <div className="flex items-center gap-4">
             <BalanceButton />
