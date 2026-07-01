@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 
+const MAX_DEPOSIT_AMOUNT = 300;
+
 const DepositFlow = () => {
   const [method, setMethod] = useState("UPI"); // default
-  const [amount, setAmount] = useState(200);
+  const [amount, setAmount] = useState("");
   const [payNumber, setPayNumber] = useState("");
   const [cryptoType, setCryptoType] = useState("usdt");
   const [network, setNetwork] = useState("erc20");
@@ -12,8 +14,6 @@ const DepositFlow = () => {
   const [qrCryptoCodes, setQrCryptoCodes] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const quickAmounts = [100, 200, 300, 500, 1000, 2000, 3000, 5000];
 
   const details = {
     payNumber: payNumber.trim(),
@@ -59,8 +59,13 @@ const DepositFlow = () => {
     setErrorMessage("");
 
     const depositAmount = Number(amount);
-    if (!depositAmount || depositAmount < 100 || depositAmount > 5000) {
-      setErrorMessage("Please enter an amount between 100 and 5000.");
+    if (!depositAmount || depositAmount <= 0) {
+      setErrorMessage("Please enter a valid deposit amount.");
+      return;
+    }
+
+    if (depositAmount > MAX_DEPOSIT_AMOUNT) {
+      setErrorMessage(`Deposit amount cannot be more than ${MAX_DEPOSIT_AMOUNT}.`);
       return;
     }
 
@@ -85,7 +90,7 @@ const DepositFlow = () => {
 
       // Reset all states
       setMethod("UPI");
-      setAmount(200);
+      setAmount("");
       setPayNumber("");
       setCryptoType("usdt");
       setNetwork("erc20");
@@ -109,32 +114,17 @@ const DepositFlow = () => {
   const renderAmountSelection = () => (
     <div className="mb-4">
       <h2 className="text-lg font-medium flex justify-between mb-2 text-gray-200">
-        Deposit Amount: <span>Min: 100</span> <span>Max: 5000</span>
+        Deposit Amount: <span>Max: {MAX_DEPOSIT_AMOUNT}</span>
       </h2>
       <input
         type="number"
         value={amount}
-        min={100}
-        max={5000}
+        min={1}
+        max={MAX_DEPOSIT_AMOUNT}
         onChange={(e) => setAmount(e.target.value)}
         placeholder={`Enter amount in ${getCurrencySymbol()}`}
         className="shadow-[#9C1137] shadow-xs px-4 py-2 rounded-md w-full text-white outline-none"
       />
-      <div className="grid grid-cols-4 gap-3 mt-3">
-        {quickAmounts.map((amt) => (
-          <button
-            key={amt}
-            onClick={() => setAmount(amt)}
-            className={`px-4 py-2 rounded-md ${
-              amount === amt
-                ? "bg-[#9C1137] font-medium text-amber-200"
-                : "bg-[#3d1017] text-gray-200"
-            }`}
-          >
-            {amt}
-          </button>
-        ))}
-      </div>
     </div>
   );
 

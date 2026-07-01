@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 
+const MAX_WITHDRAWAL_AMOUNT = 300;
+
 const WithdrawalFormETH = () => {
   const [formData, setFormData] = useState({
     amount: '',
@@ -30,6 +32,11 @@ const WithdrawalFormETH = () => {
       return;
     }
 
+    if (amount > MAX_WITHDRAWAL_AMOUNT) {
+      setErrorMessage(`Withdrawal amount cannot be more than ${MAX_WITHDRAWAL_AMOUNT}.`);
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await axiosInstance.post('/api/v1/wallet/withraw', {
@@ -53,10 +60,12 @@ const WithdrawalFormETH = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <input
-        type="text"
+        type="number"
         name="amount"
-        placeholder="Payout amount (ETH)"
+        placeholder={`Payout amount (ETH) max ${MAX_WITHDRAWAL_AMOUNT}`}
         className="input"
+        min="1"
+        max={MAX_WITHDRAWAL_AMOUNT}
         value={formData.amount}
         onChange={handleChange}
       />
