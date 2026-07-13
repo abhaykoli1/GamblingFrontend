@@ -9,6 +9,38 @@ import TelegramMenu from "../components/TelegramMenu";
 import AboutDialog from "./notificationDiloag";
 import BannerCarousel from "../components/BannerCarousel";
 
+const DownloadAppCard = ({ className = "" }) => (
+  <div
+    className={`w-full rounded border border-yellow-600/70 bg-gradient-to-r from-[#6f001c] via-[#3a000b] to-black p-4 shadow-lg shadow-[#9C1137]/25 ${className}`}
+  >
+    <div className="flex items-center gap-4">
+      <img
+        src="/infinity-games-logo.png"
+        alt="Infinity Games"
+        className="h-16 w-16 rounded object-cover"
+      />
+      <div className="min-w-0 text-left">
+        <p className="text-xs font-bold uppercase tracking-wide text-yellow-300">
+          Android App
+        </p>
+        <h2 className="text-xl font-bold text-gray-100">
+          Download Infinity Games APK
+        </h2>
+        <p className="text-sm text-gray-300">
+          Install the app and play faster from your phone.
+        </p>
+      </div>
+    </div>
+    <a
+      href="/downloads/infinity-games.apk"
+      download="infinity-games.apk"
+      className="mt-4 block w-full rounded-md bg-gradient-to-b from-yellow-300 via-yellow-500 to-[#9C1137] px-5 py-3 text-center font-bold text-black shadow shadow-black/40"
+    >
+      Download APK
+    </a>
+  </div>
+);
+
 const Home = () => {
   const [games, setGames] = useState([]);
   console.log(games);
@@ -75,10 +107,7 @@ const Home = () => {
                 // className="bg-blue-500  hover:bg-blue-600"
               />
             </Link>
-            <Button
-              className="bg-gradient-to-b lg:w-[70%] h-12 w-full from-[#9C1137] via-[#9C1137]  to-black"
-              children="Download Our App"
-            ></Button>
+            <DownloadAppCard className="lg:w-[70%]" />
           </div>
           <Slider />
         </div>
@@ -112,6 +141,9 @@ const Home = () => {
 
       <div className="md:hidden flex flex-col pt-4">
         <Slider />
+        <div className="px-6 pt-4">
+          <DownloadAppCard />
+        </div>
         <div className="my-8 flex flex-col flex-wrap md:flex-row gap-y-4 md:px-20 px-6 justify-around">
           {games.map((gameKey) => {
             const info = gameInfo[gameKey];
